@@ -1,64 +1,100 @@
 import React, { Fragment, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Nav, Navbar } from "react-bootstrap";
+import { Link, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import AuthContext from "../../context/auth/authContext";
+import ProductContext from "../../context/product/productContext";
+import CartContext from "../../context/cart/cartContext";
 
-const Navbar = ({ title, icon }) => {
+const Navigation = (props) => {
+	const { title, icon } = props;
 	const authContext = useContext(AuthContext);
-	const { isAuthenticated, logout, login, user } = authContext;
+	const { isAuthenticated, logout, login, user, isAdmin } = authContext;
 
+	// @TODO Bring Cart Context
+	const cartContext = useContext(CartContext);
+	const { cart } = cartContext;
+	const count = cart.length;
 	// @TODO Bring ProductContext
+	const productContext = useContext(ProductContext);
+	const { loadProducts } = productContext;
 	const guestLinks = (
 		<Fragment>
-			<li>
-				<Link to='/products'>Products</Link>
-			</li>
-			<li>
+			<Nav.Link>
+				<Link to='/'>Products</Link>
+			</Nav.Link>
+			<Nav.Link>
 				<Link to='/register'>Register</Link>
-			</li>
-			<li>
+			</Nav.Link>
+			<Nav.Link>
+				<Link to='login'>Login</Link>
+			</Nav.Link>
+			{/* <li>
 				<Link to='/login'>Login</Link>
-			</li>
+			</li> */}
 		</Fragment>
 	);
 
-	const handleClick = () => {
+	const handleSelect = () => {
 		logout();
-		//
-		// clearProductss()
+		return <Redirect to='/' />;
 	};
 
 	const authLinks = (
 		<Fragment>
-			<li>
-				<Link to='/Products'>Products</Link>
-			</li>
-			<li> Hello {user && user.name.toUpperCase()} </li>
-			<li>
-				<a href='#!' onClick={handleClick}>
-					{" "}
-					<i className='fas fa-sign-out'></i> <span className='hide-sm'>Logout</span>{" "}
-				</a>
-			</li>
+			<Nav.Link href='#' className='text-white'>
+				Hello {user && user.name.toUpperCase()}{" "}
+			</Nav.Link>
+			<Nav.Link href='#' className='text-white' onSelect={handleSelect}>
+				{" "}
+				<i className='fas fa-sign-out'></i> <span className='hide-sm'>Logout</span>{" "}
+			</Nav.Link>
 		</Fragment>
 	);
+
+	const adminLink = (
+		<Nav.Link href='/add' className='text-white'>
+			Add Product
+		</Nav.Link>
+	);
 	return (
-		<div className='navbar bg-primary'>
-			<h1>
+		<Navbar bg='primary'>
+			<Navbar.Brand href='/'>
+				<h1 className='text-white'>
+					{" "}
+					<i className={icon} /> {title}
+				</h1>
+			</Navbar.Brand>
+			<Nav className='ml-auto'>
 				{" "}
-				<i className={icon} /> {title}
-			</h1>
-			<ul> {isAuthenticated ? authLinks : guestLinks}</ul>
-		</div>
+				{isAuthenticated ? authLinks : guestLinks}
+				{isAuthenticated && isAdmin && adminLink}
+				<Nav.Link className='text-white' href='/checkout'>
+					<i className='fas fa-shopping-cart fa-2x'></i>{" "}
+					<span className='text-danger'>{count}</span>
+				</Nav.Link>
+			</Nav>
+		</Navbar>
+		// <div className='navbar bg-primary'>
+		// 	<h1 className='navbar-brand'>
+		// 		{" "}
+		// 		<i className={icon} /> {title}
+		// 	</h1>
+		// 	<ul className='navbar-nav'>
+		// 		{" "}
+		// 		{isAuthenticated ? authLinks : guestLinks}
+		// 		{isAuthenticated && user.isAdmin && adminLink}
+		// 	</ul>
+		// </div>
 	);
 };
 
-Navbar.propTypes = {
+Navigation.propTypes = {
 	title: PropTypes.string.isRequired,
-	icon: PropTypes.string
+	icon: PropTypes.string,
 };
-Navbar.defaultProps = {
+Navigation.defaultProps = {
 	title: "STOP and SHOP",
-	icon: ""
+	icon: "",
 };
-export default Navbar;
+export default Navigation;

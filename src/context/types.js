@@ -1,5 +1,6 @@
 export const GET_PRODUCTS = "GET_PRODUCTS";
 export const ADD_PRODUCT = "ADD_PRODUCT";
+export const ADD_PRODUCT_IMAGE = "ADD_PRODUCT_IMAGE";
 export const PRODUCT_ERROR = "PRODUCT_ERROR";
 export const DELETE_PRODUCT = "DELETE_PRODUCT";
 export const SET_CURRENT = "SET_CURRENT";
@@ -19,3 +20,9 @@ export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAIL = "LOGIN_FAIL";
 export const LOGOUT = "LOGOUT";
 export const CLEAR_ERRORS = "CLEAR_ERRORS";
+
+export const ADD_TO_CART = "ADD_TO_CART";
+export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
+export const GET_CART = "GET_CART";
+export const UPDATE_CART = "UPDATE_CART";
+export const CART_ERROR = "CART_ERROR";

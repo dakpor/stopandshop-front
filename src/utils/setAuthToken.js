@@ -2,9 +2,8 @@ const axios = require("axios");
 
 const setAuthToken = token => {
 	if (token) {
-		axios.defaults.headers.common["x-auth-token"] = token;
+		return (axios.defaults.headers.common["x-auth-token"] = token);
 	}
-
 	delete axios.defaults.headers.common["x-auth-token"];
 };
 
